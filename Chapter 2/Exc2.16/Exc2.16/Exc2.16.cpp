@@ -1,4 +1,11 @@
-﻿#include <stdio.h>
+﻿//Exercise 2.16
+/*
+    Date:   2020-10-15
+    Author: Jonathan Zhang
+    Version:1.0
+*/
+
+#include <stdio.h>
 
 int main()
 {
