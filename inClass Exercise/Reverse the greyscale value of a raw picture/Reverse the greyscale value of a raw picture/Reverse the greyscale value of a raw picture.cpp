@@ -2,7 +2,7 @@
 /*
     Author:     Linloir(Jonathan Zhang)
     Date:       2020-10-27
-    Version:    1.0    
+    Version:    10.0(2020-10-30)
 */
 
 #define _CRT_SECURE_NO_DEPRECATE        //Ignore annoying warnings C6262
@@ -14,14 +14,14 @@
 #define HEIGHT 400
 #define WIDTH  400
 
-typedef unsigned char BYTE;
+//typedef unsigned char BYTE;
 
 int main() {
     //A pointer points to construct FILE
     FILE* fp;
 
     //Declare a two dimension array to storage the information of each pixel
-    BYTE greyScale[HEIGHT][WIDTH];
+    unsigned int greyScale[HEIGHT][WIDTH];
 
     //Get the file path from standard input
     char filePath[256] = { 0 };                              //String type filepath
@@ -36,13 +36,13 @@ int main() {
     }
 
     //Assign storage
-    unsigned char* fileStorage = (unsigned char*)malloc(sizeof(unsigned char) * HEIGHT * WIDTH);
+    unsigned char* fileStorage = (unsigned char*)malloc(sizeof(unsigned int) * HEIGHT * WIDTH);
     if (fileStorage == NULL) {
         printf("Malloc function failed");
         return 0x2;
     }
     else {
-        fread(fileStorage, sizeof(unsigned char) * HEIGHT * WIDTH, 1, fp);
+        fread(fileStorage, sizeof(unsigned int) * HEIGHT * WIDTH, 1, fp);
         printf("File read!\n");
     }
 
@@ -55,12 +55,26 @@ int main() {
     free(fileStorage);
     fclose(fp);
 
+    //Find the wrong numbers
+    //for (int x = 0; x < 400; x++) {
+        //for (int y = 0; y < 400; y++) {
+            //if (greyScale[x][y] == 0)
+                //printf("x: %d; y: %d; %u\n", x,y,greyScale[x][y]);
+        //}
+    //}
+
     //Read the output path
     printf("Data saved, please enter a new path to store output image:\n");
     scanf_s("%s", filePath, 256);
 
     //Create new raw file
-    fp = fopen(filePath, "w");
+
+    //! WARNING
+    //! fp = fopen(filePath, "w");
+    //! in version 9.0, output is more than 160,000 pixels
+    //! "w" writes in txt mode while "wb" write in binary mode
+
+    fp = fopen(filePath, "wb");
     if (fp == NULL) {
         printf("Failed!");
         return 0x3;
@@ -69,7 +83,7 @@ int main() {
     //Write data into new file
     for (int x = 0; x < 400; x++) {             //Line count from 1 to 400
         for (int y = 0; y < 400; y++) {         //Row count from 1 to 400
-            fwrite(&greyScale[x][y], 1, 1, fp);
+            putc(greyScale[x][y], fp);
         }
     }
     fclose(fp);
