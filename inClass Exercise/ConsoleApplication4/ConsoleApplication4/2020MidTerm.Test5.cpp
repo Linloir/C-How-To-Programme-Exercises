@@ -21,7 +21,7 @@ int main() {
 
 	for (int i = 1; i <= n; i++) {
 		sum = sum + currentNumber(a,i);
-		//printf("current Number is: %d\n", currentNumber(a, i));		//Test sentence
+//		printf("current Number is: %d\n", currentNumber(a, i));		//Test sentence
 	}
 
 	printf("The result is: %d", sum);
